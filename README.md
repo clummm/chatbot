@@ -1,5 +1,9 @@
 # chatbot
 
+聊天机器人前端模块，功能有闲聊功能与音乐搜寻播放后功能。基于 vue-cli 3.x搭建，eslint+prettier检测与规范代码，jest单元测试，cypress e2e测试，stylus css预处理。
+
+
+
 ## 运行
 
 ### Project setup
@@ -69,14 +73,14 @@ chatbot
 |   ├── main.js                  // 项目 js 入口
 |   ├── router.js                // 路由定义
 |   └── store.js                 // vex文件
-├── .browserslistrc          // 浏览器兼容性配置文件
-├── .editorconfig            // 编辑器配置文件
-├── .eslintrc.js             // eslint配置文件
+├── tests
+|   ├── e2e                      // e2e测试
+|   └── unit                     // 单元测试
 ├── .gitignore
 ├── babel.config.js          // babel配置文件，babel用于将es6编译成es5
-├── package.json
+├── cypress.json
 ├── package-lock.json
-├── postcss.config.js
+├── package.json
 ├── README.md
 └── vue.config.js            // 相当于 vue-cli 2.x 中 build、config 配置文件
 ```
