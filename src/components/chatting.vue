@@ -2,7 +2,7 @@
 <template>
   <div class="chatting">
     <div class="header">
-      <span class="title">小T</span>
+      <span class="title">小 T</span>
     </div>
     <div
       class="contentbox"
@@ -48,7 +48,6 @@
 
 <script>
 import chatbubble from "./chatbubble";
-import musicbubble from "./musicbubble";
 import Message from "../common/Message";
 
 import data from "../common/data";
@@ -56,8 +55,7 @@ import data from "../common/data";
 export default {
   name: "chatting",
   components: {
-    chatbubble,
-    musicbubble
+    chatbubble
   },
   data() {
     return {
@@ -162,6 +160,8 @@ export default {
   background-color #ffffff
   position relative
   .header
+    font-weight bolder
+    font-size 20px
     height 51px
     text-align center
     position absolute
