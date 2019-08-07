@@ -5,4 +5,5 @@ Vue.use(Button);
 Vue.use(Card);
 Vue.use(Input);
 Vue.use(Popover);
-Vue.use(Message);
+Vue.component(Message.name, Message);
+Vue.prototype.$message = Message;

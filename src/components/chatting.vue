@@ -7,7 +7,6 @@
     <div
       class="contentbox"
       ref="content"
-      @scroll="checkScroll($event)"
     >
       <div class="messages">
         <transition-group class="list">
@@ -50,7 +49,6 @@
 <script>
 import chatbubble from "./chatbubble";
 import Message from "../common/Message";
-import { setTimeout } from "timers";
 
 export default {
   name: "chatting",
@@ -66,78 +64,68 @@ export default {
       // 用户输入的内容
       textarea: "",
       // 显示字数提醒
-      showHint: false,
-      // 滚动是否为用户触发
-      userScroll: false
+      showHint: false
     };
   },
   methods: {
     // 发送消息
     sendMessage() {
       let vue = this;
-      vue.scrollBottom();
 
       console.log("scrollTop" + this.$refs.content.scrollTop);
       console.log("scrollHeight" + this.$refs.content.scrollHeight);
       console.log("clientHeight" + this.$refs.content.clientHeight);
 
       // 发送内容不能为空
-      if (this.checkFormat(this.textarea)) return;
-
+      if (this.checkFormat(this.textarea)) {
+        this.$message("字数不能为空哦");
+        return;
+      }
       vue.messages.push(new Message("my", vue.textarea, new Date().getTime()));
+
       // 向后端发送闲聊消息
       vue.$http
         .post("/api/chat", {
           query: vue.textarea
         })
         .then(function(response) {
-          // 添加到消息队列
           vue.messages.push(
             new Message("t", response.data.payload.text, new Date().getTime())
           );
-          vue.scrollBottom();
         })
         .catch(function(error) {
           console.log(error);
           vue.messages.push(
             new Message("t", "诶呀，出错了", new Date().getTime())
           );
-          vue.scrollBottom();
         });
       vue.textarea = "";
     },
 
     // 字数限定检查
     checkFormat(content) {
+      console.log("content: " + content);
       this.showHint = content.trim().length < 1;
-      this.$messages("字数不能少于1个哦");
       return this.showHint;
     },
 
     // 滚动到最底部
     scrollBottom() {
-      // if (this.userScroll) return;
       let vue = this;
-      vue.userScroll = false;
       let content = vue.$refs.content;
-      let delay = content.scrollHeight / 4;
-      if (content.scrollHeight > content.clientHeight) {
-        content.scrollTop += Math.max(delay, 10);
-        setTimeout(function() {
-          vue.scrollBottom();
-        }, 30);
-      }
-    },
-
-    // 监听滚动事件
-    checkScroll(event) {
-      // this.userScroll = true;
-      console.log(event);
+      content.scrollTop = content.scrollHeight;
     }
   },
   created() {
     this.firstMessage.setTimeStamp(new Date().getTime());
     this.messages.push(this.firstMessage);
+  },
+  watch: {
+    messages: function() {
+      this.$nextTick(function() {
+        this.scrollBottom();
+      });
+    }
   }
 };
 </script>
