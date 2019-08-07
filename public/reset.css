@@ -74,14 +74,9 @@ hr {
 html { overflow-y: scroll; }
 
 /* 自定义 */
-/* 定义网页最小宽高 */
+/* 定义网页最外控件无滚动条 */
 html, body {
-  /*!*min-width: 1024px;*!*/
-  /*width: 1024px;*/
-  /*min-height: 100%;*/
-  /*margin: auto;*/
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
   min-width: 1024px;
 }
 

@@ -11,6 +11,17 @@ export default {
   name: "app",
   components: {
     chatting
+  },
+  created() {
+    // 测试跨域请求
+    this.$http
+      .get("/api/chat")
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 </script>
@@ -18,10 +29,9 @@ export default {
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  height: 100%;
+  min-height: 600px;
+  overflow: hidden;
+  background-color: #f3f3f3;
 }
 </style>
