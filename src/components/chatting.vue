@@ -7,18 +7,21 @@
     <div
       class="contentbox"
       ref="content"
+      @scroll="checkScroll($event)"
     >
       <div class="messages">
-        <div
-          class="clearfix"
-          v-for="(message, index) in messages"
-          :key=index
-        >
-          <chatbubble
-            :class="message.sender === 't' ? 'left' : 'right'"
-            :message=message.content
-          ></chatbubble>
-        </div>
+        <transition-group class="list">
+          <div
+            class="clearfix"
+            v-for="message in messages"
+            :key=message.timestamp
+          >
+            <chatbubble
+              :class="message.sender === 't' ? 'left' : 'right'"
+              :message=message.content
+            ></chatbubble>
+          </div>
+        </transition-group>
       </div>
     </div>
     <div class="footer">
@@ -34,12 +37,6 @@
       </div>
       <div class="send-box">
         <div class="send">
-          <!-- <el-popover
-            trigger="manual"
-            placement="top-start"
-            content="发送内容不能为空"
-            v-model="showHint"
-          ></el-popover> -->
           <el-button
             round
             @click="sendMessage"
@@ -55,8 +52,6 @@ import chatbubble from "./chatbubble";
 import Message from "../common/Message";
 import { setTimeout } from "timers";
 
-const reply = new Message("t", "知道了");
-
 export default {
   name: "chatting",
   components: {
@@ -71,7 +66,9 @@ export default {
       // 用户输入的内容
       textarea: "",
       // 显示字数提醒
-      showHint: false
+      showHint: false,
+      // 滚动是否为用户触发
+      userScroll: false
     };
   },
   methods: {
@@ -87,7 +84,7 @@ export default {
       // 发送内容不能为空
       if (this.checkFormat(this.textarea)) return;
 
-      vue.messages.push({ sender: "my", content: vue.textarea });
+      vue.messages.push(new Message("my", vue.textarea, new Date().getTime()));
       // 向后端发送闲聊消息
       vue.$http
         .post("/api/chat", {
@@ -95,24 +92,33 @@ export default {
         })
         .then(function(response) {
           // 添加到消息队列
-          vue.messages.push(new Message("t", response.data.payload.text));
+          vue.messages.push(
+            new Message("t", response.data.payload.text, new Date().getTime())
+          );
           vue.scrollBottom();
         })
         .catch(function(error) {
           console.log(error);
-          vue.messages.push(new Message("t", "诶呀，出错了"));
+          vue.messages.push(
+            new Message("t", "诶呀，出错了", new Date().getTime())
+          );
           vue.scrollBottom();
         });
       vue.textarea = "";
     },
+
     // 字数限定检查
     checkFormat(content) {
-      this.showHint = content.trim().length < 1 || content.trim().length >= 400;
+      this.showHint = content.trim().length < 1;
+      this.$messages("字数不能少于1个哦");
       return this.showHint;
     },
+
     // 滚动到最底部
     scrollBottom() {
+      // if (this.userScroll) return;
       let vue = this;
+      vue.userScroll = false;
       let content = vue.$refs.content;
       let delay = content.scrollHeight / 4;
       if (content.scrollHeight > content.clientHeight) {
@@ -121,13 +127,16 @@ export default {
           vue.scrollBottom();
         }, 30);
       }
-      content.scrollTop =
-        content.scrollHeight > content.clientHeight
-          ? content.scrollHeight
-          : content.scrollTop;
+    },
+
+    // 监听滚动事件
+    checkScroll(event) {
+      // this.userScroll = true;
+      console.log(event);
     }
   },
   created() {
+    this.firstMessage.setTimeStamp(new Date().getTime());
     this.messages.push(this.firstMessage);
   }
 };
@@ -175,4 +184,9 @@ export default {
     overflow auto
     .messages
       overflow-y auto
+.list-enter-active, .list-leave-active
+  transition all 3s
+.list-enter, .list-leave-to
+  opacity 0
+  transform translateY(30px)
 </style>
