@@ -4,7 +4,10 @@
     <div class="header">
       <span class="title">小T</span>
     </div>
-    <div class="contentbox" ref="content">
+    <div
+      class="contentbox"
+      ref="content"
+    >
       <div class="messages">
         <div
           class="clearfix"
@@ -50,6 +53,7 @@
 <script>
 import chatbubble from "./chatbubble";
 import Message from "../common/Message";
+import { setTimeout } from "timers";
 
 const reply = new Message("t", "知道了");
 
@@ -73,16 +77,16 @@ export default {
   methods: {
     // 发送消息
     sendMessage() {
-      
+      let vue = this;
+      vue.scrollBottom();
 
-      console.log('scrollTop' + this.$refs.content.scrollTop)
-      console.log('scrollHeight' + this.$refs.content.scrollHeight)
-
+      console.log("scrollTop" + this.$refs.content.scrollTop);
+      console.log("scrollHeight" + this.$refs.content.scrollHeight);
+      console.log("clientHeight" + this.$refs.content.clientHeight);
 
       // 发送内容不能为空
       if (this.checkFormat(this.textarea)) return;
 
-      let vue = this;
       vue.messages.push({ sender: "my", content: vue.textarea });
       // 向后端发送闲聊消息
       vue.$http
@@ -92,11 +96,12 @@ export default {
         .then(function(response) {
           // 添加到消息队列
           vue.messages.push(new Message("t", response.data.payload.text));
-          vue.scrollBottom()
+          vue.scrollBottom();
         })
         .catch(function(error) {
           console.log(error);
           vue.messages.push(new Message("t", "诶呀，出错了"));
+          vue.scrollBottom();
         });
       vue.textarea = "";
     },
@@ -107,8 +112,19 @@ export default {
     },
     // 滚动到最底部
     scrollBottom() {
-      let content = this.$refs.content
-      content.scrollTop = content.scrollHeight > content.clientHeight ? content.scrollHeight : content.scrollTop
+      let vue = this;
+      let content = vue.$refs.content;
+      let delay = content.scrollHeight / 4;
+      if (content.scrollHeight > content.clientHeight) {
+        content.scrollTop += Math.max(delay, 10);
+        setTimeout(function() {
+          vue.scrollBottom();
+        }, 30);
+      }
+      content.scrollTop =
+        content.scrollHeight > content.clientHeight
+          ? content.scrollHeight
+          : content.scrollTop;
     }
   },
   created() {
