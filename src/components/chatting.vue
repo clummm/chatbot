@@ -17,7 +17,7 @@
           >
             <chatbubble
               :class="message.sender === 't' ? 'left' : 'right'"
-              :message=message.content
+              :message=message
             ></chatbubble>
           </div>
         </transition-group>
@@ -48,17 +48,21 @@
 
 <script>
 import chatbubble from "./chatbubble";
+import musicbubble from "./musicbubble";
 import Message from "../common/Message";
+
+import data from "../common/data";
 
 export default {
   name: "chatting",
   components: {
-    chatbubble
+    chatbubble,
+    musicbubble
   },
   data() {
     return {
       // 问候消息
-      firstMessage: new Message("t", "您好"),
+      greeting: new Message(0, "t", "您好"),
       // 消息队列
       messages: [],
       // 用户输入的内容
@@ -81,7 +85,9 @@ export default {
         this.$message("字数不能为空哦");
         return;
       }
-      vue.messages.push(new Message("my", vue.textarea, new Date().getTime()));
+      vue.messages.push(
+        new Message(0, "my", vue.textarea, new Date().getTime())
+      );
 
       // 向后端发送闲聊消息
       vue.$http
@@ -90,13 +96,18 @@ export default {
         })
         .then(function(response) {
           vue.messages.push(
-            new Message("t", response.data.payload.text, new Date().getTime())
+            new Message(
+              response.data.header.skillId,
+              "t",
+              response.data.payload.text,
+              new Date().getTime()
+            )
           );
         })
         .catch(function(error) {
           console.log(error);
           vue.messages.push(
-            new Message("t", "诶呀，出错了", new Date().getTime())
+            new Message(0, "t", "诶呀，出错了", new Date().getTime())
           );
         });
       vue.textarea = "";
@@ -117,8 +128,18 @@ export default {
     }
   },
   created() {
-    this.firstMessage.setTimeStamp(new Date().getTime());
-    this.messages.push(this.firstMessage);
+    // this.greeting.setTimeStamp(new Date().getTime());
+    // this.messages.push(this.greeting);
+    // ！！！！！！！！！！！！！！！测试！！！！！！！！！！！！！！！！！！！
+    this.messages.push(
+      new Message(
+        data.header.skillId,
+        "t",
+        data.payload.text,
+        new Date().getTime(),
+        data.payload.music
+      )
+    );
   },
   watch: {
     messages: function() {
@@ -175,7 +196,7 @@ export default {
       // overflow-x hidden
       min-height 100%
 .list-enter-active, .list-leave-active
-  transition all .3s
+  transition all 0.4s
 .list-enter, .list-leave-to
   opacity 0
   transform translateY(30px)
