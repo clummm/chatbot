@@ -4,49 +4,115 @@
     <div class="header">
       <span class="title">小T</span>
     </div>
-    <div class="contentbox">contentbox</div>
+    <div class="contentbox" ref="content">
+      <div class="messages">
+        <div
+          class="clearfix"
+          v-for="(message, index) in messages"
+          :key=index
+        >
+          <chatbubble
+            :class="message.sender === 't' ? 'left' : 'right'"
+            :message=message.content
+          ></chatbubble>
+        </div>
+      </div>
+    </div>
     <div class="footer">
       <div class="input-area">
-        <el-input
-          type="textarea"
-          :rows="2"
-          placeholder="请输入内容"
-          v-model="textarea"
-        >内容</el-input>
+        <div class="input-wrapper">
+          <el-input
+            type="textarea"
+            :rows="4"
+            placeholder="请输入内容"
+            v-model="textarea"
+          ></el-input>
+        </div>
       </div>
-      <div class="send">
-        <el-button
-          round
-          size="small"
-        >发送</el-button>
+      <div class="send-box">
+        <div class="send">
+          <!-- <el-popover
+            trigger="manual"
+            placement="top-start"
+            content="发送内容不能为空"
+            v-model="showHint"
+          ></el-popover> -->
+          <el-button
+            round
+            @click="sendMessage"
+          >发送</el-button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-/**
- messages: [{
-   id: 0,
-   sender: 't',
-   content: '您好'
- }, ...]
- */
+import chatbubble from "./chatbubble";
+import Message from "../common/Message";
+
+const reply = new Message("t", "知道了");
+
 export default {
   name: "chatting",
+  components: {
+    chatbubble
+  },
   data() {
     return {
       // 问候消息
-      firstMessage: {
-        id: 0,
-        sender: "t",
-        content: "您好"
-      },
+      firstMessage: new Message("t", "您好"),
       // 消息队列
       messages: [],
       // 用户输入的内容
-      textarea: ""
+      textarea: "",
+      // 显示字数提醒
+      showHint: false
     };
+  },
+  methods: {
+    // 发送消息
+    sendMessage() {
+      
+
+      console.log('scrollTop' + this.$refs.content.scrollTop)
+      console.log('scrollHeight' + this.$refs.content.scrollHeight)
+
+
+      // 发送内容不能为空
+      if (this.checkFormat(this.textarea)) return;
+
+      let vue = this;
+      vue.messages.push({ sender: "my", content: vue.textarea });
+      // 向后端发送闲聊消息
+      vue.$http
+        .post("/api/chat", {
+          query: vue.textarea
+        })
+        .then(function(response) {
+          // 添加到消息队列
+          vue.messages.push(new Message("t", response.data.payload.text));
+          vue.scrollBottom()
+        })
+        .catch(function(error) {
+          console.log(error);
+          vue.messages.push(new Message("t", "诶呀，出错了"));
+        });
+      vue.textarea = "";
+    },
+    // 字数限定检查
+    checkFormat(content) {
+      this.showHint = content.trim().length < 1 || content.trim().length >= 400;
+      return this.showHint;
+    },
+    // 滚动到最底部
+    scrollBottom() {
+      let content = this.$refs.content
+      content.scrollTop = content.scrollHeight > content.clientHeight ? content.scrollHeight : content.scrollTop
+    }
+  },
+  created() {
+    this.messages.push(this.firstMessage);
   }
 };
 </script>
@@ -77,8 +143,20 @@ export default {
     right 0
     height 180px
     border-top 1px solid #d6d6d6
+    .input-area
+      .input-wrapper
+        padding 20px 10px 10px
+        .el-textarea>>>.el-textarea__inner
+          border 0
+    .send-box
+      padding 10px
+      text-align right
   .contentbox
     position absolute
     bottom 180px
     top 51px
+    width 100%
+    overflow auto
+    .messages
+      overflow-y auto
 </style>
