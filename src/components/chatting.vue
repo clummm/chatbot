@@ -9,7 +9,7 @@
       ref="content"
     >
       <div class="messages">
-        <transition-group class="list">
+        <transition-group name="list">
           <div
             class="clearfix"
             v-for="message in messages"
@@ -109,7 +109,7 @@ export default {
       return this.showHint;
     },
 
-    // 滚动到最底部
+    // 自动滚动到最底部
     scrollBottom() {
       let vue = this;
       let content = vue.$refs.content;
@@ -171,9 +171,11 @@ export default {
     width 100%
     overflow auto
     .messages
-      overflow-y auto
+      // overflow-y auto
+      // overflow-x hidden
+      min-height 100%
 .list-enter-active, .list-leave-active
-  transition all 3s
+  transition all .3s
 .list-enter, .list-leave-to
   opacity 0
   transform translateY(30px)

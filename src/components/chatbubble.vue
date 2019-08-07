@@ -1,7 +1,7 @@
 <!-- 聊天气泡 -->
 <template>
   <div class="chatbubble">
-    <span>{{ message }}</span>
+    <div class="content">{{ message }}</div>
   </div>
 </template>
 
@@ -26,13 +26,14 @@ export default {
 <style lang="stylus" scoped>
 .chatbubble
   background-color #f3f3f3
-  min-width 100px
+  min-width 50px
   max-width 600px
   min-height 40px
   word-wrap break-word
+  white-space pre-wrap
   margin 15px 20px
-  padding 10px
-  &>span
+  &>.content
+    padding 10px
     vertical-align middle
 </style>
 
