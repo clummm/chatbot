@@ -65,6 +65,9 @@ export default {
   width 34px
   height 34px
 .playing
+  height 100%
+  display flex
+  flex-direction column
   .header
     text-align right
     padding 10px
@@ -87,6 +90,8 @@ export default {
         height 300px
         border-radius 300px
   .player
-    text-align center
-    margin 0 auto
+    flex 1
+    padding 30px 10px
+    // display flex
+    // justify-content center
 </style>

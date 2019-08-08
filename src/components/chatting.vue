@@ -132,10 +132,8 @@ export default {
     },
 
     // 自动滚动到最底部
-    scrollBottom() {
-      let vue = this;
-      let content = vue.$refs.content;
-      content.scrollTop = content.scrollHeight;
+    scrollBottom(element) {
+      element.scrollTop = element.scrollHeight;
     }
   },
   created() {
@@ -155,7 +153,7 @@ export default {
   watch: {
     messages: function() {
       this.$nextTick(function() {
-        this.scrollBottom();
+        this.scrollBottom(this.$refs.content);
       });
     }
   }
