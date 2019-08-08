@@ -63,6 +63,7 @@ export default {
   word-wrap break-word
   white-space pre-wrap
   margin 15px 20px
+  box-shadow 0 2px 5px 0 #aaaaaa
   .text
     padding 10px
     vertical-align middle
