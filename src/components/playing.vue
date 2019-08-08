@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import chatbotAudio from "./chatbotAudio"
+import chatbotAudio from "./chatbotAudio";
 
 export default {
   name: "playing",

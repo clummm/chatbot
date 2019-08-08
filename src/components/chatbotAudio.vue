@@ -11,7 +11,7 @@
       您的浏览器不支持 audio 标签。
     </audio>
     <div class="controller clearfix">
-      <div class="toggle">
+      <div class="controll-item toggle">
         <img
           class="icon"
           v-if="paused"
@@ -25,8 +25,11 @@
           src="/img/pause.png"
         >
       </div>
-      <div class="start-time" ref="startTime">{{ timeFormat(currentTime) }}</div>
-      <div class="progress-wrapper">
+      <div
+        class="controll-item start-time"
+        ref="startTime"
+      >{{ timeFormat(currentTime) }}</div>
+      <div class="controll-item progress-wrapper">
         <div
           class="progress progress-bar"
           ref="progress"
@@ -39,10 +42,12 @@
         <div
           class="progress progress-dot"
           :style="{left: progressPercent}"
-          @pointerdown="startDragging"
         ></div>
       </div>
-      <div class="end-time" ref="endTime">{{ timeFormat(duration) }}</div>
+      <div
+        class="controll-item end-time"
+        ref="endTime"
+      >{{ timeFormat(duration) }}</div>
     </div>
   </div>
 </template>
@@ -66,8 +71,6 @@ export default {
       progressbar: null,
       // 音乐是否暂停
       paused: false,
-      // 是否拖动进度条
-      dragging: false,
       // 当前播放时间 / 总时长
       progress: 0,
       // 当前播放时间
@@ -93,16 +96,16 @@ export default {
     togglePlay() {
       console.log("before: " + this.audio.paused);
       if (this.audio.paused) {
-        this.play()
+        this.play();
       } else {
-        this.pause()
+        this.pause();
       }
       console.log("after: " + this.audio.paused);
     },
     // 播放
     play() {
       this.paused = false;
-      this.audio.play()
+      this.audio.play();
     },
     // 暂停
     pause() {
@@ -121,7 +124,7 @@ export default {
     },
     // 进度条点击事件处理
     handleProgressClick(event) {
-      this.setProgress(event.clientX)
+      this.setProgress(event.clientX);
     },
     // 设置进度条
     setProgress(x) {
@@ -133,11 +136,6 @@ export default {
         progressPercent = 1;
       }
       this.audio.currentTime = this.audio.duration * progressPercent;
-    },
-    // 拖动进度条事件
-    startDragging() {
-      this.pause();
-      this.dragging = true;
     }
   },
   mounted() {
@@ -146,7 +144,7 @@ export default {
     vue.progressbar = vue.$refs.progress;
     // 当浏览器能够开始播放指定的音频时，更新播放器时长显示
     vue.audio.oncanplay = function() {
-      console.log('oncanplay: '+ vue.audio.duration);
+      console.log("oncanplay: " + vue.audio.duration);
       vue.$refs.endTime.innerHTML = vue.timeFormat(vue.audio.duration);
       vue.handleTimeUpdate();
     };
@@ -163,6 +161,11 @@ export default {
   .controller
     display flex
     justify-content center
+    align-items center
+    .controll-item
+      padding 10px 20px
+      vertical-align middle
+      line-height 100%
     .progress-wrapper
       width 500px
       position relative
