@@ -80,7 +80,6 @@ export default {
     };
   },
   created() {
-    console.log("url: " + this.playUrl);
   },
   computed: {
     // 播放进度百分比计算
@@ -94,13 +93,11 @@ export default {
     },
     // 播放 / 暂停处理
     togglePlay() {
-      console.log("before: " + this.audio.paused);
       if (this.audio.paused) {
         this.play();
       } else {
         this.pause();
       }
-      console.log("after: " + this.audio.paused);
     },
     // 播放
     play() {
@@ -120,7 +117,6 @@ export default {
     handleTimeUpdate() {
       this.currentTime = this.audio ? this.audio.currentTime : 0;
       this.progress = this.audio.currentTime / this.audio.duration;
-      console.log("progress: " + this.progress);
     },
     // 进度条点击事件处理
     handleProgressClick(event) {
@@ -144,7 +140,6 @@ export default {
     vue.progressbar = vue.$refs.progress;
     // 当浏览器能够开始播放指定的音频时，更新播放器时长显示
     vue.audio.oncanplay = function() {
-      console.log("oncanplay: " + vue.audio.duration);
       vue.$refs.endTime.innerHTML = vue.timeFormat(vue.audio.duration);
       vue.handleTimeUpdate();
     };
@@ -180,8 +175,10 @@ export default {
         background-color #d3d3d3
         border-radius 6px
       .progress-passed
+        border-radius 0
         background-color #ff6161
       .progress-dot
+        top -3px
         height 10px
         width 10px
         border-radius 10px

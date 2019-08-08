@@ -49,7 +49,7 @@
 <script>
 import chatbubble from "./chatbubble";
 import Message from "../common/js/Message";
-import { SKILL_ID, data } from "../common/js/data";
+import { SKILL_ID } from "../common/js/data";
 
 export default {
   name: "chatting",
@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       // 问候消息
-      greeting: new Message(0, "t", "您好"),
+      greeting: new Message(0, "t", "您好，我是小T，很高兴为您服务~"),
       // 消息队列
       messages: [],
       // 用户输入的内容
@@ -72,11 +72,6 @@ export default {
     // 发送消息
     sendMessage() {
       let vue = this;
-
-      console.log("scrollTop" + this.$refs.content.scrollTop);
-      console.log("scrollHeight" + this.$refs.content.scrollHeight);
-      console.log("clientHeight" + this.$refs.content.clientHeight);
-
       // 发送内容不能为空
       if (this.checkFormat(this.textarea)) {
         this.$message("字数不能为空哦");
@@ -92,7 +87,6 @@ export default {
           query: vue.textarea
         })
         .then(function(response) {
-          console.log(response)
           let code = response.data.header.code;
           if (Number(code) === 0) {
             vue.messages.push(
@@ -126,7 +120,6 @@ export default {
 
     // 字数限定检查
     checkFormat(content) {
-      console.log("content: " + content);
       this.showHint = content.trim().length < 1;
       return this.showHint;
     },
@@ -137,18 +130,18 @@ export default {
     }
   },
   created() {
-    // this.greeting.setTimeStamp(new Date().getTime());
-    // this.messages.push(this.greeting);
+    this.greeting.setTimeStamp(new Date().getTime());
+    this.messages.push(this.greeting);
     // ！！！！！！！！！！！！！！！测试！！！！！！！！！！！！！！！！！！！
-    this.messages.push(
-      new Message(
-        data.header.skillId,
-        "t",
-        data.payload.text,
-        new Date().getTime(),
-        data.payload.music
-      )
-    );
+    // this.messages.push(
+    //   new Message(
+    //     data.header.skillId,
+    //     "t",
+    //     data.payload.text,
+    //     new Date().getTime(),
+    //     data.payload.music
+    //   )
+    // );
   },
   watch: {
     messages: function() {

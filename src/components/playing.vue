@@ -7,7 +7,6 @@
         src="/img/close.png"
         @click="close"
       >
-      <!-- <i class="icon-guanbi"></i> -->
     </div>
     <div class="detail">
       <p class="detail-item song">{{ this.song }}</p>
@@ -48,13 +47,6 @@ export default {
   created() {
     if (!this.$route.params || Object.keys(this.$route.params).length <= 0) {
       this.$router.go(-1);
-    } else {
-      console.log(this.$route.params);
-      console.log(this.song);
-      console.log(this.singer);
-      console.log(this.album.name);
-      console.log(this.album.picUrl);
-      console.log(this.playUrl);
     }
   }
 };
@@ -92,6 +84,4 @@ export default {
   .player
     flex 1
     padding 30px 10px
-    // display flex
-    // justify-content center
 </style>
