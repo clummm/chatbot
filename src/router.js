@@ -15,7 +15,7 @@ export default new Router({
       component: chatting
     },
     {
-      path: "/play",
+      path: "/playing",
       name: "playing",
       component: playing
     }

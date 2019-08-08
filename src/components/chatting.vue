@@ -48,9 +48,8 @@
 
 <script>
 import chatbubble from "./chatbubble";
-import Message from "../common/Message";
-
-import data from "../common/data";
+import Message from "../common/js/Message";
+import { SKILL_ID, data } from "../common/js/data";
 
 export default {
   name: "chatting",
@@ -93,14 +92,28 @@ export default {
           query: vue.textarea
         })
         .then(function(response) {
-          vue.messages.push(
-            new Message(
-              response.data.header.skillId,
-              "t",
-              response.data.payload.text,
-              new Date().getTime()
-            )
-          );
+          console.log(response)
+          let code = response.data.header.code;
+          if (Number(code) === 0) {
+            vue.messages.push(
+              new Message(
+                response.data.header.skillId,
+                "t",
+                response.data.payload.text,
+                new Date().getTime(),
+                response.data.payload.music
+              )
+            );
+          } else {
+            vue.messages.push(
+              new Message(
+                SKILL_ID.chat,
+                "t",
+                response.data.header.message,
+                new Date().getTime()
+              )
+            );
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -151,13 +164,7 @@ export default {
 
 <style lang="stylus" scoped>
 .chatting
-  max-width 1000px
-  min-width 800px
   height 100%
-  margin 0 auto
-  box-shadow 0 2px 12px 0 #aaaaaa
-  border-radius 4px
-  background-color #ffffff
   position relative
   .header
     font-weight bolder
@@ -192,8 +199,6 @@ export default {
     width 100%
     overflow auto
     .messages
-      // overflow-y auto
-      // overflow-x hidden
       min-height 100%
 .list-enter-active, .list-leave-active
   transition all 0.4s

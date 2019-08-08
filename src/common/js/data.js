@@ -1,8 +1,15 @@
+const SKILL_ID = {
+  chat: 0,
+  music: 1
+};
+
 // 测试数据
 const data = {
   header: {
     skillId: 1,
-    skillName: "music"
+    skillName: "music",
+    code: 0,
+    message: "正常"
   },
   payload: {
     text: "主人，我已经为找到刘德华的忘情水啦",
@@ -22,9 +29,11 @@ const data = {
           }
         ]
       },
+      musicName: "忘情水",
+      singer: "刘德华",
       playUrl: "https://v1.itooi.cn/netease/url?id=110740&quality=flac"
     }
   }
 };
 
-export default data;
+export { SKILL_ID, data };

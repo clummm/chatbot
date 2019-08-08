@@ -10,7 +10,9 @@ Vue.config.productionTip = false;
 
 // 全局引用axios
 Vue.prototype.$http = axios;
-// axios.defaults.baseURL = 'http://192.168.43.206:8080';
+
+// 总线
+// Vue.prototype.$EventBus = new Vue();
 
 new Vue({
   router,

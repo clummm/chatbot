@@ -7,18 +7,21 @@
       v-if="message.type === 1"
     >
       <div class="clearfix">
-        <div class="album-img left" :style="{backgroundImage: `url(${message.music.data.songs[0].al.picUrl})`}">
-          <!-- <img
-            class="album-img"
-            :src="message.music.data.songs[0].al.picUrl"
-          /> -->
-          <img class="play-icon" src="../common/play.png" >
+        <div
+          class="album-img left"
+          :style="{backgroundImage: `url(${message.music.data.songs[0].al.picUrl})`}"
+          @click="play"
+        >
+          <img
+            class="play-icon"
+            src="/img/play.png"
+          >
           <!-- <i class="el-icon-video-play play-icon"></i> -->
         </div>
 
         <div class="music-detail left">
-          <p>{{message.music.data.songs[0].name}}</p>
-          <p>{{`歌手：${message.music.data.songs[0].singer}`}}</p>
+          <p>{{message.music.musicName}}</p>
+          <p>{{`歌手：${message.music.singer}`}}</p>
           <p>{{`专辑：《${message.music.data.songs[0].al.name}》`}}</p>
         </div>
       </div>
@@ -37,6 +40,14 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    play() {
+      this.$router.push({
+        name: "playing",
+        params: this.message.music
+      });
+    }
   },
   created() {
     console.log(this.message);
@@ -66,6 +77,9 @@ export default {
       border-radius 120px
       cursor pointer
       text-align center
+      background-repeat no-repeat
+      background-position center
+      background-size cover
       .play-icon
         background-color rgba(187, 187, 187, 0.3)
         position relative
