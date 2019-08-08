@@ -25,6 +25,7 @@
           src="/img/pause.png"
         >
       </div>
+      <div class="start-time" ref="startTime">{{ timeFormat(currentTime) }}</div>
       <div class="progress-wrapper">
         <div
           class="progress progress-bar"
@@ -41,6 +42,7 @@
           @pointerdown="startDragging"
         ></div>
       </div>
+      <div class="end-time" ref="endTime">{{ timeFormat(duration) }}</div>
     </div>
   </div>
 </template>
@@ -69,7 +71,9 @@ export default {
       // 当前播放时间 / 总时长
       progress: 0,
       // 当前播放时间
-      currentTime: 0
+      currentTime: 0,
+      // 总时长
+      duration: 0
     };
   },
   created() {
@@ -82,6 +86,9 @@ export default {
     }
   },
   methods: {
+    timeFormat(sec) {
+      return secToTimer(sec);
+    },
     // 播放 / 暂停处理
     togglePlay() {
       console.log("before: " + this.audio.paused);
@@ -139,6 +146,8 @@ export default {
     vue.progressbar = vue.$refs.progress;
     // 当浏览器能够开始播放指定的音频时，更新播放器时长显示
     vue.audio.oncanplay = function() {
+      console.log('oncanplay: '+ vue.audio.duration);
+      vue.$refs.endTime.innerHTML = vue.timeFormat(vue.audio.duration);
       vue.handleTimeUpdate();
     };
   }
