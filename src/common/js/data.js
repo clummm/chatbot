@@ -32,7 +32,7 @@ const data = {
       musicName: "忘情水",
       singer: "刘德华",
       // playUrl: "https://v1.itooi.cn/netease/url?id=110740&quality=flac"
-      playUrl: "/Hello.mp3"
+      playUrl: "https://v1.itooi.cn/netease/url?id=110740&quality=flac"
     }
   }
 };
