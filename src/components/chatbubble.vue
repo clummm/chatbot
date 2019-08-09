@@ -45,7 +45,9 @@ export default {
     play() {
       this.$router.push({
         name: "playing",
-        params: this.message.music
+        params: {
+          music: this.message.music
+        }
       });
     }
   },

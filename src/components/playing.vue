@@ -29,10 +29,10 @@ export default {
   name: "playing",
   data() {
     return {
-      song: this.$route.params.musicName,
-      singer: this.$route.params.singer,
-      album: this.$route.params.data.songs[0].al,
-      playUrl: this.$route.params.playUrl
+      song: this.$route.params.music.musicName,
+      singer: this.$route.params.music.singer,
+      album: this.$route.params.music.data.songs[0].al,
+      playUrl: this.$route.params.music.playUrl
     };
   },
   components: {
@@ -45,7 +45,7 @@ export default {
     }
   },
   created() {
-    if (!this.$route.params || Object.keys(this.$route.params).length <= 0) {
+    if (!this.$route.params.music || Object.keys(this.$route.params.music).length <= 0) {
       this.$router.go(-1);
     }
   }
