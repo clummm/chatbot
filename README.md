@@ -1,6 +1,6 @@
 # chatbot
 
-聊天机器人前端模块，功能有闲聊功能与音乐搜寻播放后功能。基于 vue-cli 3.x搭建，eslint+prettier检测与规范代码，jest单元测试，cypress e2e测试，stylus css预处理。
+聊天机器人前端模块，功能有闲聊功能与音乐搜寻播放后功能。基于 vue-cli 3.x搭建，eslint+prettier检测与规范代码，stylus css预处理。
 
 
 
