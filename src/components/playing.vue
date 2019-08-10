@@ -2,22 +2,22 @@
 <template>
   <div class="playing">
     <div class="header">
-      <img
+      <!-- <img
         class="close icon"
         src="/img/close.png"
         @click="close"
-      >
+      > -->
     </div>
     <div class="detail">
-      <p class="detail-item song">{{ this.song }}</p>
-      <p class="detail-item singer">{{ this.singer }}</p>
-      <p class="detail-item album">{{ `《${this.album.name}》` }}</p>
+      <p class="detail-item song">{{ music.song }}</p>
+      <p class="detail-item singer">{{ music.singer }}</p>
+      <p class="detail-item album">{{ `《${music.data.songs[0].al.name}》` }}</p>
       <div class="detail-item album-img">
-        <img :src="this.album.picUrl">
+        <img :src="music.data.songs[0].al.picUrl">
       </div>
     </div>
     <div class="player">
-      <chatbot-audio :play-url="this.playUrl"></chatbot-audio>
+      <chatbot-audio :play-url="music.playUrl"></chatbot-audio>
     </div>
   </div>
 </template>
@@ -29,10 +29,7 @@ export default {
   name: "playing",
   data() {
     return {
-      song: this.$route.params.music.musicName,
-      singer: this.$route.params.music.singer,
-      album: this.$route.params.music.data.songs[0].al,
-      playUrl: this.$route.params.music.playUrl
+      music: null
     };
   },
   components: {
@@ -45,9 +42,21 @@ export default {
     }
   },
   created() {
-    if (!this.$route.params.music || Object.keys(this.$route.params.music).length <= 0) {
-      this.$router.go(-1);
+    if (!this.$route.params.id) {
+      this.$message("音乐消息错误，请关闭页面");
+      return;
     }
+    let list;
+    if(!sessionStorage.getItem("musicList")) {
+      this.$message("音乐消息错误，请关闭页面");
+    } else {
+      list = JSON.parse(sessionStorage.getItem("musicList"));
+      this.music = list[this.$route.params.id];
+    }
+    console.log("new page, list");
+    console.log(list);
+    console.log("music");
+    console.log(this.music);
   }
 };
 </script>
@@ -63,6 +72,7 @@ export default {
   .header
     text-align right
     padding 10px
+    min-height 34px
     .close
       cursor pointer
   .detail

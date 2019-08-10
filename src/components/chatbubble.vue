@@ -43,12 +43,21 @@ export default {
   },
   methods: {
     play() {
-      this.$router.push({
-        name: "playing",
-        params: {
-          music: this.message.music
-        }
-      });
+      // this.$router.push({
+      //   name: "playing",
+      //   params: {
+      //     music: this.message.music
+      //   }
+      // });
+      if(!sessionStorage.getItem("musicList")) {
+        sessionStorage.setItem("musicList", JSON.stringify({}));
+      }
+      let list = JSON.parse(sessionStorage.getItem("musicList"));
+      list[this.message.music.data.songs[0].id] = this.message.music;
+      sessionStorage.setItem("musicList", JSON.stringify(list));
+      console.log("list")
+      console.log(sessionStorage.getItem("musicList"));
+      this.rHelper.openPlayerNewWindow(this.message.music.data.songs[0].id);
     }
   },
   created() {

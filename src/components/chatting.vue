@@ -130,18 +130,18 @@ export default {
     }
   },
   created() {
-    // this.greeting.setTimeStamp(new Date().getTime());
-    // this.messages.push(this.greeting);
+    this.greeting.setTimeStamp(new Date().getTime());
+    this.messages.push(this.greeting);
     // ！！！！！！！！！！！！！！！测试！！！！！！！！！！！！！！！！！！！
-    this.messages.push(
-      new Message(
-        data.header.skillId,
-        "t",
-        data.payload.text,
-        new Date().getTime(),
-        data.payload.music
-      )
-    );
+    // this.messages.push(
+    //   new Message(
+    //     data.header.skillId,
+    //     "t",
+    //     data.payload.text,
+    //     new Date().getTime(),
+    //     data.payload.music
+    //   )
+    // );
   },
   watch: {
     messages: function() {
