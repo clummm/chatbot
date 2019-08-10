@@ -20,7 +20,7 @@
         </div>
 
         <div class="music-detail left">
-          <p>{{message.music.musicName}}</p>
+          <p>{{message.music.data.songs[0].name}}</p>
           <p>{{`歌手：${message.music.singer}`}}</p>
           <p>{{`专辑：《${message.music.data.songs[0].al.name}》`}}</p>
         </div>
