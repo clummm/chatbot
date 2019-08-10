@@ -6,7 +6,6 @@
       :src="this.playUrl"
       @timeupdate="handleTimeUpdate"
       @ended="handleEnd"
-      autoplay
     >
       您的浏览器不支持 audio 标签。
     </audio>
@@ -70,7 +69,7 @@ export default {
       // 进度条控件
       progressbar: null,
       // 音乐是否暂停
-      paused: false,
+      paused: true,
       // 当前播放时间 / 总时长
       progress: 0,
       // 当前播放时间
