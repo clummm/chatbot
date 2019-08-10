@@ -78,6 +78,7 @@ chatbot
 |   ├── views                    // 视图组件
 |   ├── App.vue                  // 根组件
 |   ├── main.js                  // 项目 js 入口
+|   ├── routeHelper.js           // 路由工具
 |   ├── router.js                // 路由定义
 |   └── store.js                 // vex文件
 ├── tests
